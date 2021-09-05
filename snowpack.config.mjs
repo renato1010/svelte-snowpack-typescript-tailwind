@@ -1,17 +1,18 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
   mount: {
-    public: {url: '/', static: true},
-    src: {url: '/dist'},
+    public: { url: "/", static: true },
+    src: { url: "/dist" },
   },
   plugins: [
-    '@snowpack/plugin-svelte',
-    '@snowpack/plugin-dotenv',
+    "@snowpack/plugin-svelte",
+    "@snowpack/plugin-dotenv",
+    "@snowpack/plugin-postcss",
     [
-      '@snowpack/plugin-typescript',
+      "@snowpack/plugin-typescript",
       {
         /* Yarn PnP workaround: see https://www.npmjs.com/package/@snowpack/plugin-typescript */
-        ...(process.versions.pnp ? {tsc: 'yarn pnpify tsc'} : {}),
+        ...(process.versions.pnp ? { tsc: "yarn pnpify tsc" } : {}),
       },
     ],
   ],
@@ -27,7 +28,7 @@ export default {
     /* ... */
   },
   devOptions: {
-    /* ... */
+    tailwindConfig: "./tailwind.config.js",
   },
   buildOptions: {
     /* ... */

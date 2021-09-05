@@ -1,29 +1,111 @@
-# New Project
+# Guide to configure a Svelte application with [snowpack](https://www.snowpack.dev/)
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+What we want to accomplish?
+A functional [Svelte](https://svelte.dev/) web app, capable of handling Typescript, and [TailwindCSS](https://tailwindcss.com/) ready
 
-## Available Scripts
+The problem?
 
-### npm start
+As exciting as today's web tools are, as performing and unstoppable in innovations are,  
+they are also a complex ballet; a moving target, so the idea here is to try to establish  
+a quick guide on how to set up your Svelte application with snowpack.
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+What we'll do
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+A step by step guide from empty directory to fully configured Snowpack project handling  
+the Svelte framework capable of handling Typescript and ready for styling  
+with the TailwindCSS framework
 
-### npm test
+## Create the Snowpack App
 
-Launches the test runner in the interactive watch mode.
-See the section about running tests for more information.
+The easiest way is to start a new Snowpack project with [Create Snowpack App](https://github.com/snowpackjs/snowpack/tree/main/create-snowpack-app/cli), a tool for  
+creating a new project based on templates.
 
-### npm run build
+Create Svelte App name `svelte-snowpack-typescript-tailwind` using an official template  
+for more info check [snowpack-svelte tutorial](https://www.snowpack.dev/tutorials/svelte)
 
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
+```bash
+npx create-snowpack-app svelte-snowpack-typescript-tailwind --template @snowpack/app-template-svelte-typescript
+```
 
-**For the best production performance:** Add a build bundler plugin like [@snowpack/plugin-webpack](https://github.com/snowpackjs/snowpack/tree/main/plugins/plugin-webpack) or [snowpack-plugin-rollup-bundle](https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle) to your `snowpack.config.mjs` config file.
+change directory to:
 
-### Q: What about Eject?
+```bash
+cd svelte-snowpack-typescript-tailwind
+npm run start
+```
 
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
+That was easy!
+Now you have a full Svelte App capable of handling logic in Typescript instead of Javascript  
+running on port 8080
+
+## Set TaiwindCSS as the styling framework of choice
+
+First we need Postcss
+
+Install dependencies
+
+```bash
+npm install --save-dev tailwindcss @snowpack/plugin-postcss postcss autoprefixer cssnano
+```
+
+then configure files: `postcss.config.js` & `tailwind.config.js` at project root
+
+- this files use the Node style require instead of esm import
+
+At `postcss.config.js` :
+
+```javascript
+const tailwind = require("tailwindcss");
+const autoprefixer = require("autoprefixer");
+const cssnano = require("cssnano");
+
+const plugins =
+  process.env.NODE_ENV === "production" ? [tailwind, autoprefixer, cssnano] : [tailwind, autoprefixer];
+
+module.exports = { plugins };
+```
+
+Then go to `tailwind.config.js`
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  mode: "jit",
+  purge: ["./public/**/*.html", "./src/**/*.svelte"],
+  // specify other options here
+};
+```
+
+Let know `snowpack` you want to use `posttcss` preprocessor
+At `snowpack.config.mjs`
+
+![tell snowpack use postcss](screenshots/config-snowpack-use-postcss-2021-09-05_11-01.png)
+
+Cool! last steps
+
+create file: `src/main.css` and paste the basic config of TailwindCSS
+
+```css
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+```
+
+Then at `src/index.ts` import
+
+```typescript
+import App from "./App.svelte";
+import "./main.css";
+```
+
+Test if this Works!!!
+
+At `src/App.svelte` set the background to a typical tailwindcss utility class
+
+![test-tailwind](screenshots/test-tailwindcss-on-svelte-2021-09-05_10-00.png)
+
+result
+
+![render svelte app](screenshots/render-app-svelte-2021-09-05_11-12.png)

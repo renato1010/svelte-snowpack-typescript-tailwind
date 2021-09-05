@@ -1,21 +1,29 @@
 <script lang="ts">
-  import {onMount} from 'svelte'
+  import { onMount } from "svelte";
 
-  let count: number = 0
+  let count: number = 0;
   onMount(() => {
-    const interval = setInterval(() => count++, 1000)
+    const interval = setInterval(() => count++, 1000);
     return () => {
-      clearInterval(interval)
-    }
-  })
+      clearInterval(interval);
+    };
+  });
 </script>
 
-<style>
-  :global(body) {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+<div class="App">
+  <header class="App-header bg-yellow-300">
+    <img src="/logo.svg" class="App-logo" alt="logo" />
+    <p>Edit <code>src/App.svelte</code> and save to reload.</p>
+    <p class="text-green-700">Page has been open for <code>{count}</code> seconds.</p>
+    <p>
+      <a class="App-link" href="https://svelte.dev" target="_blank" rel="noopener noreferrer">
+        Learn Svelte
+      </a>
+    </p>
+  </header>
+</div>
 
+<style>
   .App {
     text-align: center;
   }
@@ -31,7 +39,7 @@
   }
 
   .App-header {
-    background-color: #f9f6f6;
+    /* background-color: #f9f6f6; */
     color: #333;
     min-height: 100vh;
     display: flex;
@@ -61,16 +69,3 @@
     }
   }
 </style>
-
-<div class="App">
-  <header class="App-header">
-    <img src="/logo.svg" class="App-logo" alt="logo"/>
-    <p>Edit <code>src/App.svelte</code> and save to reload.</p>
-    <p>Page has been open for <code>{count}</code> seconds.</p>
-    <p>
-      <a class="App-link" href="https://svelte.dev" target="_blank" rel="noopener noreferrer">
-        Learn Svelte
-      </a>
-    </p>
-  </header>
-</div>
